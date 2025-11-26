@@ -1,11 +1,10 @@
 import { Component, signal } from "@angular/core";
-import { RouterOutlet } from "@angular/router";
+import { MyCard } from "./components/my-card/my-card";
 
 @Component({
 	selector: "app-root",
-	imports: [RouterOutlet],
+	imports: [MyCard],
 	templateUrl: "./app.html",
-	styleUrl: "./app.css",
 })
 export class App {
 	protected readonly title = signal("algasensors-client");
