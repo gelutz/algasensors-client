@@ -8,7 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "biome format --write",
-    "spartan:add": "ng g @spartan-ng/cli:ui"
+    "spartan:add": "ng g @spartan-ng/cli:ui",
+    "ng:add": "ng g c --interactive --defaults -s -t --skip-tests"
   },
   "prettier": {
     "printWidth": 100,

@@ -18,6 +18,9 @@
       ],
       "@spartan-ng/helm/utils": [
         "./src/app/components/libs/ui/utils/src/index.ts"
+      ],
+      "@spartan-ng/helm/button": [
+        "./src/app/components/libs/ui/button/src/index.ts"
       ]
     }
   },
