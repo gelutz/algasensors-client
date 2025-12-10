@@ -21,6 +21,21 @@
       ],
       "@spartan-ng/helm/button": [
         "./src/app/components/libs/ui/button/src/index.ts"
+      ],
+      "@spartan-ng/helm/dialog": [
+        "./src/app/components/libs/ui/dialog/src/index.ts"
+      ],
+      "@spartan-ng/helm/input": [
+        "./src/app/components/libs/ui/input/src/index.ts"
+      ],
+      "@spartan-ng/helm/form-field": [
+        "./src/app/components/libs/ui/form-field/src/index.ts"
+      ],
+      "@spartan-ng/helm/label": [
+        "./src/app/components/libs/ui/label/src/index.ts"
+      ],
+      "@spartan-ng/helm/icon": [
+        "./src/app/components/libs/ui/icon/src/index.ts"
       ]
     }
   },

@@ -29,6 +29,12 @@ importers:
       '@angular/router':
         specifier: ^21.0.0
         version: 21.0.1(@angular/common@21.0.1(@angular/core@21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2))(@angular/platform-browser@21.0.1(@angular/common@21.0.1(@angular/core@21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2)))(rxjs@7.8.2)
+      '@ng-icons/core':
+        specifier: '>=32.0.0 <34.0.0'
+        version: 33.0.0(@angular/common@21.0.1(@angular/core@21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2))(rxjs@7.8.2)
+      '@ng-icons/lucide':
+        specifier: '>=32.0.0 <34.0.0'
+        version: 33.0.0
       '@spartan-ng/brain':
         specifier: 0.0.1-alpha.566
         version: 0.0.1-alpha.566(@angular/cdk@21.0.0(@angular/common@21.0.1(@angular/core@21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/common@21.0.1(@angular/core@21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2))(@angular/forms@21.0.1(@angular/common@21.0.1(@angular/core@21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2))(@angular/platform-browser@21.0.1(@angular/common@21.0.1(@angular/core@21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2)))(@standard-schema/spec@1.0.0)(rxjs@7.8.2))(clsx@2.1.1)(luxon@3.7.2)(rxjs@7.8.2)(tailwindcss@4.1.17)
@@ -38,6 +44,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      dotenv:
+        specifier: ^17.2.3
+        version: 17.2.3
       rxjs:
         specifier: ~7.8.0
         version: 7.8.2
@@ -1860,6 +1869,16 @@ packages:
   '@napi-rs/wasm-runtime@1.0.7':
     resolution: {integrity: sha512-SeDnOO0Tk7Okiq6DbXmmBODgOAb9dp9gjlphokTUxmt8U3liIP1ZsozBahH69j/RJv+Rfs6IwUKHTgQYJ/HBAw==}
 
+  '@ng-icons/core@33.0.0':
+    resolution: {integrity: sha512-yLRBA6FnvW16dCCqiSoA7YrCwsPcrrwmh/VylmMLHZuBe7lmPnBJ5JE8hILU9HmYr+HPPXoH47esu881M7lftA==}
+    peerDependencies:
+      '@angular/common': '>=21.0.0'
+      '@angular/core': '>=21.0.0'
+      rxjs: ^6.5.3 || ^7.4.0
+
+  '@ng-icons/lucide@33.0.0':
+    resolution: {integrity: sha512-HX4tAihCPE3jYgzrlPpM8O/6d/1hbHNHW37GtCQOcY8JFeBc3v5a2MCwFQQwqFm74zBnQbY6iJeGIP6dsaMnuA==}
+
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
     engines: {node: '>= 8'}
@@ -3548,6 +3567,10 @@ packages:
 
   dotenv@16.4.7:
     resolution: {integrity: sha512-47qPchRCykZC03FhkYAhrvwU4xDBFIj1QPqaarj6mdM/hgUzfPHcpkHJOn3mJAufFeeAxAzeGsr5X0M4k6fLZQ==}
+    engines: {node: '>=12'}
+
+  dotenv@17.2.3:
+    resolution: {integrity: sha512-JVUnt+DUIzu87TABbhPmNfVdBDt18BLOWjMUFJMSi/Qqg7NTYtabbvSNJGOJ7afbRuv9D/lngizHtP7QyLQ+9w==}
     engines: {node: '>=12'}
 
   dunder-proto@1.0.1:
@@ -8546,6 +8569,17 @@ snapshots:
       '@tybys/wasm-util': 0.10.1
     optional: true
 
+  '@ng-icons/core@33.0.0(@angular/common@21.0.1(@angular/core@21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2))(rxjs@7.8.2)':
+    dependencies:
+      '@angular/common': 21.0.1(@angular/core@21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2))(rxjs@7.8.2)
+      '@angular/core': 21.0.1(@angular/compiler@21.0.1)(rxjs@7.8.2)
+      rxjs: 7.8.2
+      tslib: 2.8.1
+
+  '@ng-icons/lucide@33.0.0':
+    dependencies:
+      tslib: 2.8.1
+
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
       '@nodelib/fs.stat': 2.0.5
@@ -10543,6 +10577,8 @@ snapshots:
       dotenv: 16.4.7
 
   dotenv@16.4.7: {}
+
+  dotenv@17.2.3: {}
 
   dunder-proto@1.0.1:
     dependencies:

@@ -1,11 +1,39 @@
-<section hlmCard>
-    <div hlmCardHeader>
-        <h3 hlmCardTitle class="text-center">Sensor #1</h3>
+<div hlmCard class="w-full transition-all duration-300" [class.border-destructive]="isAlarming()"
+    [class.shadow-lg]="isAlarming()">
+    <div hlmCardHeader class="flex flex-row items-center justify-between pb-2 space-y-0">
+        <h3 hlmCardTitle class="text-sm font-medium">
+            {{ sensor().name }}
+        </h3>
+        <ng-icon hlm [name]="sensor().isOnline ? 'lucideWifi' : 'lucideWifiOff'" class="h-4 w-4"
+            [class.text-muted-foreground]="!sensor().isOnline" [class.text-green-600]="sensor().isOnline" />
     </div>
-    <div hlmCardContent class="flex flex-col items-center justify-center py-4">
-        <p class="text-4xl font-bold text-orange-400">45ºC</p>
+    <div hlmCardContent>
+        <div class="text-2xl font-bold flex items-center gap-2" [class]="statusColor()">
+            <ng-icon hlm name="lucideThermometer" class="h-6 w-6" />
+            {{ sensor().temperature }}°C
+        </div>
+        <p class="text-xs text-muted-foreground mt-1">
+            @if (sensor().minAlarm !== null) {
+            Min: {{ sensor().minAlarm }}°C
+            }
+            @if (sensor().minAlarm !== null && sensor().maxAlarm !== null) {
+            •
+            }
+            @if (sensor().maxAlarm !== null) {
+            Max: {{ sensor().maxAlarm }}°C
+            }
+            @if (sensor().minAlarm === null && sensor().maxAlarm === null) {
+            No alarms set
+            }
+        </p>
     </div>
-    <div hlmCardFooter class="justify-center">
-        <button hlmBtn variant="outline" size="sm">View Details</button>
+    <div hlmCardFooter class="justify-end pt-2">
+        <hlm-dialog>
+            <button hlmBtn variant="ghost" size="sm" hlmDialogTrigger>
+                <ng-icon hlm name="lucideSettings" class="mr-2 h-4 w-4" />
+                Settings
+            </button>
+            <app-sensor-settings-dialog *brnDialogContent="let ctx" [sensor]="sensor()" />
+        </hlm-dialog>
     </div>
-</section>
+</div>
