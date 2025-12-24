@@ -3,8 +3,8 @@ export type Sensor = {
     name: string;
     ip: string;
     location: string;
-    protocol: string;
-    model: string;
+    protocol?: string;
+    model?: string;
     enabled: boolean;
     lastTemperature?: number;
     updatedAt?: Date;

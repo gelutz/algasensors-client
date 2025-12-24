@@ -1,5 +1,14 @@
 <div class="p-4 w-full">
-    <h1 class="text-2xl text-primary font-semibold">Sensors Dashboard</h1>
-    <small class="text-muted-color">See important sensor data quickly.</small>
+    <div class="flex justify-between items-center">
+        <div>
+            <h1 class="text-2xl text-primary font-semibold">Sensors Dashboard</h1>
+            <small class="text-muted-color">See important sensor data quickly.</small>
+        </div>
+
+        <p-button [label]="isSmall() ? '' : 'Add sensor'" size="small" icon="pi pi-plus"
+            (onClick)="sensorDialog.open()"></p-button>
+    </div>
     <p-divider></p-divider>
 </div>
+
+<app-sensor-dialog #sensorDialog />

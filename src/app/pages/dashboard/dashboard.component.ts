@@ -5,6 +5,7 @@ import { Sensor } from '../../models/sensor';
 import { SensorService } from '../../services/sensor.service';
 import { DashboardHeaderComponent } from './components/dashboard-header/dashboard-header.component';
 import { DashboardSensorGridComponent } from './components/dashboard-sensor-grid/dashboard-sensor-grid.component';
+import { DashboardService } from './components/dashboard.service';
 
 @Component({
     selector: 'button-demo',
@@ -23,6 +24,7 @@ import { DashboardSensorGridComponent } from './components/dashboard-sensor-grid
 })
 export class DashboardComponent implements OnInit {
     sensorService = inject(SensorService);
+    dashboardService = inject(DashboardService);
 
     sensors$ = new BehaviorSubject<Sensor[]>([]);
 
@@ -30,5 +32,16 @@ export class DashboardComponent implements OnInit {
         this.sensorService.getPagedSensors().subscribe((response) => {
             this.sensors$.next(response.content);
         });
+
+        this.dashboardService.sensorAdded$.subscribe((newSensor) =>
+            this.sensors$.next([
+                ...this.sensors$.value,
+                {
+                    ...newSensor,
+                    enabled: false,
+                    id: '12123',
+                },
+            ]),
+        );
     }
 }
