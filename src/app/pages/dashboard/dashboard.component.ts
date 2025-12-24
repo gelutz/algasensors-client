@@ -27,8 +27,8 @@ export class DashboardComponent implements OnInit {
     sensors$ = new BehaviorSubject<Sensor[]>([]);
 
     ngOnInit() {
-        this.sensorService.getAllSensors().subscribe((sensors) => {
-            this.sensors$.next(sensors);
+        this.sensorService.getPagedSensors().subscribe((response) => {
+            this.sensors$.next(response.content);
         });
     }
 }

@@ -1,5 +1,5 @@
 import { Component, computed, inject } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { Router, RouterLinkWithHref, RouterOutlet } from '@angular/router';
 import type { MenuItem } from 'primeng/api';
 import { Button } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
@@ -8,7 +8,7 @@ import { Subject } from 'rxjs';
 
 @Component({
     selector: 'app-layout',
-    imports: [RouterOutlet, Menubar, DividerModule, Button],
+    imports: [RouterOutlet, Menubar, DividerModule, Button, RouterLinkWithHref],
     templateUrl: './layout.component.html',
 })
 export class LayoutComponent {

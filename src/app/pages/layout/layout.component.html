@@ -1,11 +1,11 @@
-<div class="p-4">
-  <p-menubar [model]="items">
+<div class="p-2">
+  <p-menubar [model]="items" class="py-1!">
     <ng-template #start>
       <div>
-        <span class="flex items-center gap-2">
+        <a class="flex items-center gap-2" routerLink="/">
           <span class="pi pi-cloud text-primary text-2xl!"></span>
           <h3 class="font-semibold text-primary">AlgaSensors</h3>
-        </span>
+        </a>
       </div>
       <p-divider layout="vertical"></p-divider>
     </ng-template>
