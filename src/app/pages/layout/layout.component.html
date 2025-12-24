@@ -1,0 +1,17 @@
+<div class="p-4">
+  <p-menubar [model]="items">
+    <ng-template #start>
+      <div>
+        <span class="flex items-center gap-2">
+          <span class="pi pi-cloud text-primary text-2xl!"></span>
+          <h3 class="font-semibold text-primary">AlgaSensors</h3>
+        </span>
+      </div>
+      <p-divider layout="vertical"></p-divider>
+    </ng-template>
+    <ng-template #end>
+      <p-button variant="text" [icon]="isThemeDark() ? 'pi pi-sun' : 'pi pi-moon'" (onClick)="toggleTheme()" />
+    </ng-template>
+  </p-menubar>
+</div>
+<router-outlet />
