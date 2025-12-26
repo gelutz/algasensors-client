@@ -6,7 +6,7 @@
         </div>
 
         <p-button [label]="isSmall() ? '' : 'Add sensor'" size="small" icon="pi pi-plus"
-            (onClick)="sensorDialog.open()"></p-button>
+            [loading]="addingSensorLoading()" (click)="sensorDialog.open()"></p-button>
     </div>
     <p-divider></p-divider>
 </div>

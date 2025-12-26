@@ -1,4 +1,5 @@
 import { Component, computed, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, RouterLinkWithHref, RouterOutlet } from '@angular/router';
 import type { MenuItem } from 'primeng/api';
 import { Button } from 'primeng/button';
@@ -29,7 +30,7 @@ export class LayoutComponent {
     ];
 
     constructor() {
-        this.toggleTheme$.subscribe(() => {
+        this.toggleTheme$.pipe(takeUntilDestroyed()).subscribe(() => {
             const element = document.querySelector('html');
             element?.classList.toggle('app-dark');
         });

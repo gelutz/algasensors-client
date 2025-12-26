@@ -1,36 +1,63 @@
-<p-dialog [style]="{ width: '25rem' }" [(visible)]="visible" header="New sensor">
-    <p-inputgroup class="pt-8">
-        <p-inputgroup-addon>
-            <lucide-icon class="text-primary" [img]="ALargeSmall" name="alargesmall"></lucide-icon>
-        </p-inputgroup-addon>
-        <p-floatlabel variant="over">
-            <input pInputText id="name" [field]="sensorForm.name" />
-            <label for="name">Name</label>
-        </p-floatlabel>
-    </p-inputgroup>
+<p-dialog [modal]="true" [style]="{ width: '25rem' }" [(visible)]="visible" header="New sensor">
+    <form (submit)="handleAddSensor()" #form="ngForm">
+        <input type="submit" hidden />
+        <div class="flex flex-col gap-1">
+            <p-inputgroup class="pt-8">
+                <p-inputgroup-addon>
+                    <lucide-icon class="text-primary" [img]="ALargeSmall" name="alargesmall"></lucide-icon>
+                </p-inputgroup-addon>
+                <p-floatlabel variant="over">
+                    <input pInputText id="name" [field]="sensorForm.name" />
+                    <label for="name">Name</label>
+                </p-floatlabel>
 
-    <p-inputgroup class="pt-8">
-        <p-inputgroup-addon>
-            <lucide-icon class="text-primary" [img]="Navigation" name="navigation"></lucide-icon>
-        </p-inputgroup-addon>
-        <p-floatlabel variant="over">
-            <input pInputText id="location" [field]="sensorForm.location" />
-            <label for="location">Location</label>
-        </p-floatlabel>
-    </p-inputgroup>
+            </p-inputgroup>
 
-    <p-inputgroup class="pt-8">
-        <p-inputgroup-addon>
-            <lucide-icon class="text-primary" [img]="Rss" name="rss"></lucide-icon>
-        </p-inputgroup-addon>
-        <p-floatlabel variant="over">
-            <input pInputText id="ip" [field]="sensorForm.ip" />
-            <label for="ip">IP Address</label>
-        </p-floatlabel>
-    </p-inputgroup>
+            @if (sensorForm.name().dirty() && sensorForm.name().errors().length > 0) {
+            <p-message size="small" variant="simple" severity="error">
+                {{sensorForm.name().errors()[0].message}}
+            </p-message>
+            }
+        </div>
+        <div class="flex flex-col gap-1">
+            <p-inputgroup class="pt-8">
+                <p-inputgroup-addon>
+                    <lucide-icon class="text-primary" [img]="Navigation" name="navigation"></lucide-icon>
+                </p-inputgroup-addon>
+                <p-floatlabel variant="over">
+                    <input pInputText id="location" [field]="sensorForm.location" />
+                    <label for="location">Location</label>
+                </p-floatlabel>
+            </p-inputgroup>
+
+            @if (sensorForm.location().dirty() && sensorForm.location().errors().length > 0) {
+            <p-message size="small" variant="simple" severity="error">
+                {{sensorForm.location().errors()[0].message}}
+            </p-message>
+            }
+        </div>
+
+        <div class="flex flex-col gap-1">
+            <p-inputgroup class="pt-8">
+                <p-inputgroup-addon>
+                    <lucide-icon class="text-primary" [img]="Rss" name="rss"></lucide-icon>
+                </p-inputgroup-addon>
+                <p-floatlabel variant="over">
+                    <input pInputText id="ip" [field]="sensorForm.ip" placeholder="127.0.0.1" />
+                    <label for="ip">IP Address</label>
+                </p-floatlabel>
+            </p-inputgroup>
+
+            @if (sensorForm.ip().errors().length > 0) {
+            <p-message size="small" variant="simple" severity="error">
+                {{sensorForm.ip().errors()[0].message}}
+            </p-message>
+            }
+        </div>
+    </form>
 
     <ng-template #footer>
-        <p-button variant="outlined" label="Cancel"></p-button>
-        <p-button label="Add" (onClick)="handleAddSensor()"></p-button>
+        <p-button variant="outlined" label="Cancel" (click)="close()"></p-button>
+        <p-button label="Add" (click)="handleAddSensor()"></p-button>
     </ng-template>
 </p-dialog>

@@ -1,7 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Field, form } from '@angular/forms/signals';
+import {
+    Field,
+    form,
+    maxLength,
+    pattern,
+    required,
+} from '@angular/forms/signals';
 import {
     ALargeSmall,
     LucideAngularModule,
@@ -14,6 +20,7 @@ import { FloatLabel } from 'primeng/floatlabel';
 import { InputGroup } from 'primeng/inputgroup';
 import { InputGroupAddon } from 'primeng/inputgroupaddon';
 import { InputText } from 'primeng/inputtext';
+import { Message } from 'primeng/message';
 import { DashboardService, SensorInput } from '../dashboard.service';
 
 @Component({
@@ -29,6 +36,7 @@ import { DashboardService, SensorInput } from '../dashboard.service';
         LucideAngularModule,
         FloatLabel,
         Button,
+        Message,
     ],
     templateUrl: './sensor-dialog.component.html',
 })
@@ -44,21 +52,31 @@ export class SensorDialogComponent {
     open = () => this.visible.set(true);
     close = () => this.visible.set(false);
 
-    sensorModel = signal<SensorInput>({
+    private readonly defaultState = {
         name: '',
         location: '',
         ip: '',
+    };
+    sensorModel = signal<SensorInput>(this.defaultState);
+    sensorForm = form(this.sensorModel, (schema) => {
+        required(schema.name, { message: 'Name is required' });
+        required(schema.location, { message: 'Location is required' });
+        maxLength(schema.ip, 15);
+        pattern(schema.ip, /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/, {
+            message: 'Follow the IP pattern of xxx.xxx.xxx.xxx',
+        });
     });
-    sensorForm = form(this.sensorModel);
 
     handleAddSensor = () => {
+        if (this.sensorForm().invalid()) return;
         const sensor: SensorInput = {
-            name: this.sensorForm.name().value(),
-            location: this.sensorForm.location().value(),
-            ip: this.sensorForm.ip().value(),
+            name: this.sensorModel().name,
+            location: this.sensorModel().location,
+            ip: this.sensorModel().ip,
         };
 
-        this.dashboardService.sensorAdded$.next(sensor);
+        this.dashboardService.addSensor(sensor).subscribe();
+        this.sensorModel.set(this.defaultState);
         this.close();
     };
 }

@@ -1,0 +1,51 @@
+<p-blockui [target]="pnl" [blocked]="removingLoading()">
+    @if(removingLoading()) {
+    <ng-template #content>
+        <div class="w-full h-full flex justify-center items-center">
+            <i class="pi pi-spin pi-spinner"></i>
+        </div>
+    </ng-template>
+    } @else {
+    <ng-template></ng-template>
+    }
+</p-blockui>
+<p-panel #pnl>
+    <ng-template #header>
+        <div class="mr-8">
+            <div class="flex justify-between gap-2">
+                <div class="flex flex-col max-w-40 min-h-4">
+                    <span class="font-semibold">{{_sensor()?.name}}</span>
+                </div>
+            </div>
+            <small class="text-muted-color font-mono">{{_sensor()?.ip}}</small>
+        </div>
+    </ng-template>
+    <ng-template #icons>
+        <div class="flex gap-1 items-center">
+            <p-badge [value]="_sensor()?.enabled ? 'Online' : 'Offline'"
+                [severity]="_sensor()?.enabled ? 'success' : 'danger'"></p-badge>
+            <div class="card flex justify-center">
+                <p-menu [model]="menuOptions()" #menu [popup]="true" />
+                <p-button size="small" variant="text" (click)="menu.toggle($event)" icon="pi pi-ellipsis-v" />
+            </div>
+        </div>
+    </ng-template>
+
+    <h1 class="mt-4 text-3xl font-bold flex items-center" [class.text-muted-color]="!_sensor()?.lastTemperature">
+        <lucide-icon [img]="ThermometerIcon" size="30" name="thermometer"></lucide-icon>
+        {{_sensor()?.lastTemperature ?? '--.-'}} ⁰C
+    </h1>
+
+    <p-divider></p-divider>
+    <div class="flex items-center justify-between text-surface-600">
+        <div class="text-sm flex flex-col">
+            <span>Min:</span>
+            <span class="text-color font-semibold">-- ⁰C</span>
+        </div>
+
+        <div class="text-sm flex flex-col">
+            <span>Max:</span>
+            <span class="text-color font-semibold">-- ⁰C</span>
+        </div>
+    </div>
+</p-panel>

@@ -1,5 +1,6 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject } from 'rxjs';
 import { Sensor } from '../../models/sensor';
 import { SensorService } from '../../services/sensor.service';
@@ -8,7 +9,7 @@ import { DashboardSensorGridComponent } from './components/dashboard-sensor-grid
 import { DashboardService } from './components/dashboard.service';
 
 @Component({
-    selector: 'button-demo',
+    selector: 'app-dashboard',
     template: `
     <div class="p-4 w-full">
         <app-dashboard-header></app-dashboard-header>
@@ -22,26 +23,32 @@ import { DashboardService } from './components/dashboard.service';
         DashboardSensorGridComponent,
     ],
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent {
     sensorService = inject(SensorService);
     dashboardService = inject(DashboardService);
 
     sensors$ = new BehaviorSubject<Sensor[]>([]);
 
-    ngOnInit() {
-        this.sensorService.getPagedSensors().subscribe((response) => {
-            this.sensors$.next(response.content);
-        });
+    constructor() {
+        this.sensorService
+            .getPagedSensors()
+            .pipe(takeUntilDestroyed())
+            .subscribe((response) => {
+                this.sensors$.next(response.content.reverse());
+            });
 
-        this.dashboardService.sensorAdded$.subscribe((newSensor) =>
-            this.sensors$.next([
-                ...this.sensors$.value,
-                {
-                    ...newSensor,
-                    enabled: false,
-                    id: '12123',
-                },
-            ]),
-        );
+        this.dashboardService.sensorAdded$
+            .pipe(takeUntilDestroyed())
+            .subscribe((newSensor) => {
+                this.sensors$.next([newSensor, ...this.sensors$.value]);
+            });
+
+        this.dashboardService.sensorDeleted$
+            .pipe(takeUntilDestroyed())
+            .subscribe((sensorId) => {
+                this.sensors$.next([
+                    ...this.sensors$.value.filter((s) => s.id !== sensorId),
+                ]);
+            });
     }
 }
