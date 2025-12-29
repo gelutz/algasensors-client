@@ -1,5 +1,5 @@
 <p-dialog [modal]="true" [style]="{ width: '25rem' }" [(visible)]="visible" header="New sensor">
-    <form (submit)="handleAddSensor()" #form="ngForm">
+    <form (submit)="onSubmit($event)" novalidate>
         <input type="submit" hidden />
         <div class="flex flex-col gap-1">
             <p-inputgroup class="pt-8">
@@ -13,10 +13,13 @@
 
             </p-inputgroup>
 
-            @if (sensorForm.name().dirty() && sensorForm.name().errors().length > 0) {
+            @let name = sensorForm.name();
+            @if (name.dirty() && name.errors().length > 0) {
+            @for (error of name.errors(); track $index) {
             <p-message size="small" variant="simple" severity="error">
-                {{sensorForm.name().errors()[0].message}}
+                {{error.message}}
             </p-message>
+            }
             }
         </div>
         <div class="flex flex-col gap-1">
@@ -30,10 +33,13 @@
                 </p-floatlabel>
             </p-inputgroup>
 
-            @if (sensorForm.location().dirty() && sensorForm.location().errors().length > 0) {
+            @let location = sensorForm.location();
+            @if (location.dirty() && location.errors().length > 0) {
+            @for (error of location.errors(); track $index) {
             <p-message size="small" variant="simple" severity="error">
-                {{sensorForm.location().errors()[0].message}}
+                {{error.message}}
             </p-message>
+            }
             }
         </div>
 
@@ -48,16 +54,19 @@
                 </p-floatlabel>
             </p-inputgroup>
 
-            @if (sensorForm.ip().errors().length > 0) {
+            @let ip = sensorForm.ip();
+            @if (ip.dirty() && ip.errors().length > 0) {
+            @for (error of ip.errors(); track $index) {
             <p-message size="small" variant="simple" severity="error">
-                {{sensorForm.ip().errors()[0].message}}
+                {{error.message}}
             </p-message>
             }
+            }
+        </div>
+
+        <div class="flex justify-end gap-2 mt-4">
+            <p-button variant="outlined" label="Cancel" (click)="close()"></p-button>
+            <p-button label="Add" type="submit"></p-button>
         </div>
     </form>
-
-    <ng-template #footer>
-        <p-button variant="outlined" label="Cancel" (click)="close()"></p-button>
-        <p-button label="Add" (click)="handleAddSensor()"></p-button>
-    </ng-template>
 </p-dialog>

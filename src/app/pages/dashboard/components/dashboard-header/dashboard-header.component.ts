@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { Button } from 'primeng/button';
 import { Divider } from 'primeng/divider';
 import { mediaQuery } from '../../../../../utils/media-query';
@@ -15,6 +15,7 @@ export class DashboardHeaderComponent {
 
     dashboardService = inject(DashboardService);
 
+    addSensorModalVisible = signal(false);
     addingSensorLoading = computed(
         () => this.dashboardService.state().addingSensor,
     );

@@ -6,9 +6,11 @@
         </div>
 
         <p-button [label]="isSmall() ? '' : 'Add sensor'" size="small" icon="pi pi-plus"
-            [loading]="addingSensorLoading()" (click)="sensorDialog.open()"></p-button>
+            [loading]="addingSensorLoading()" (click)="addSensorModalVisible.set(true)"></p-button>
     </div>
     <p-divider></p-divider>
 </div>
 
-<app-sensor-dialog #sensorDialog />
+@if (addSensorModalVisible()) {
+<app-sensor-dialog [visible]="addSensorModalVisible()" (visibleChange)="addSensorModalVisible.set($event)" />
+}
