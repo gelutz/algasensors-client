@@ -6,6 +6,7 @@ import { Sensor } from '../../models/sensor';
 import { SensorService } from '../../services/sensor.service';
 import { DashboardHeaderComponent } from './components/dashboard-header/dashboard-header.component';
 import { DashboardSensorGridComponent } from './components/dashboard-sensor-grid/dashboard-sensor-grid.component';
+import { DashboardStatsComponent } from './components/dashboard-stats/dashboard-stats.component';
 import { DashboardService } from './components/dashboard.service';
 
 @Component({
@@ -13,6 +14,7 @@ import { DashboardService } from './components/dashboard.service';
     template: `
     <div class="p-4 w-full">
         <app-dashboard-header></app-dashboard-header>
+        <app-dashboard-stats [sensors]="(sensors$ | async) || []"></app-dashboard-stats>
         <app-dashboard-sensor-grid class="flex gap-4 flex-wrap" [sensors]="(sensors$ | async) || []"></app-dashboard-sensor-grid>
     </div>
         `,
@@ -21,6 +23,7 @@ import { DashboardService } from './components/dashboard.service';
         AsyncPipe,
         DashboardHeaderComponent,
         DashboardSensorGridComponent,
+        DashboardStatsComponent,
     ],
 })
 export class DashboardComponent {

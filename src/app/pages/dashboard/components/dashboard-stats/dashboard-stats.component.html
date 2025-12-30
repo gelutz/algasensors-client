@@ -1,0 +1,69 @@
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+    <p-card>
+        <div class="flex items-center justify-between">
+            <div class="flex flex-col">
+                <span class="text-sm text-muted-color font-medium">Sensors Online</span>
+                <div class="flex items-baseline gap-1 mt-1">
+                    <span class="text-3xl font-bold text-primary">{{ sensorsOnline() }}</span>
+                    <span class="text-lg text-muted-color">/ {{ totalSensors() }}</span>
+                </div>
+                <span class="text-xs text-muted-color mt-2">
+                    @if (totalSensors() > 0) {
+                    {{ ((sensorsOnline() / totalSensors()) * 100).toFixed(0) }}% operational
+                    } @else {
+                    No sensors registered
+                    }
+                </span>
+            </div>
+            <div class="w-14 h-14 rounded-full bg-green-500/10 flex items-center justify-center">
+                <lucide-icon [img]="WifiIcon" class="text-green-500" size="28" name="wifi"></lucide-icon>
+            </div>
+        </div>
+    </p-card>
+
+    <p-card>
+        <div class="flex items-center justify-between">
+            <div class="flex flex-col">
+                <span class="text-sm text-muted-color font-medium">Average Temperature</span>
+                <div class="flex items-baseline gap-1 mt-1">
+                    @if (averageTemperature() !== null) {
+                    <span class="text-3xl font-bold text-primary">{{ averageTemperature() }}</span>
+                    <span class="text-lg text-muted-color">°C</span>
+                    } @else {
+                    <span class="text-3xl font-bold text-muted-color">--.-</span>
+                    <span class="text-lg text-muted-color">°C</span>
+                    }
+                </div>
+                <span class="text-xs text-muted-color mt-2">
+                    @if (averageTemperature() !== null) {
+                    Across all active sensors
+                    } @else {
+                    No temperature data
+                    }
+                </span>
+            </div>
+            <div class="w-14 h-14 rounded-full bg-blue-500/10 flex items-center justify-center">
+                <lucide-icon [img]="ThermometerIcon" class="text-blue-500" size="28" name="thermometer"></lucide-icon>
+            </div>
+        </div>
+    </p-card>
+
+    <p-card>
+        <div class="flex items-center justify-between">
+            <div class="flex flex-col">
+                <span class="text-sm text-muted-color font-medium">Last Alert</span>
+                <div class="flex items-baseline gap-1 mt-1">
+                    <span class="text-xl font-bold text-orange-500">{{ lastAlertedSensor.name }}</span>
+                </div>
+                <div class="flex items-center gap-2 mt-1">
+                    <span class="text-sm font-semibold">{{ lastAlertedSensor.temperature }}°C</span>
+                    <span class="text-xs text-muted-color">• {{ formatAlertTime() }}</span>
+                </div>
+            </div>
+            <div class="w-14 h-14 rounded-full bg-orange-500/10 flex items-center justify-center">
+                <lucide-icon [img]="AlertTriangleIcon" class="text-orange-500" size="28"
+                    name="alert-triangle"></lucide-icon>
+            </div>
+        </div>
+    </p-card>
+</div>
