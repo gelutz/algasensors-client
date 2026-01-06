@@ -1,7 +1,7 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, filter, forkJoin, interval, switchMap } from 'rxjs';
 import { Sensor } from '../../models/sensor';
 import { SensorService } from '../../services/sensor.service';
 import { DashboardHeaderComponent } from './components/dashboard-header/dashboard-header.component';
@@ -53,5 +53,37 @@ export class DashboardComponent {
                     ...this.sensors$.value.filter((s) => s.id !== sensorId),
                 ]);
             });
+
+        this.startTemperaturePolling();
     }
+
+    private startTemperaturePolling = (): void => {
+        interval(5000)
+            .pipe(
+                takeUntilDestroyed(),
+                filter(() => this.sensors$.value.length > 0),
+                switchMap(() => {
+                    const requests = this.sensors$.value.map((sensor) =>
+                        this.sensorService.getSensorDetails(sensor.id)
+                    );
+                    return forkJoin(requests);
+                })
+            )
+            .subscribe((detailsArray) => {
+                const updatedSensors = this.sensors$.value.map((sensor) => {
+                    const details = detailsArray.find(
+                        (d) => d.sensorOutput.id === sensor.id
+                    );
+                    if (details?.details) {
+                        return {
+                            ...sensor,
+                            lastTemperature: details.details.lastTemperature,
+                            updatedAt: details.details.updatedAt,
+                        };
+                    }
+                    return sensor;
+                });
+                this.sensors$.next(updatedSensors);
+            });
+    };
 }

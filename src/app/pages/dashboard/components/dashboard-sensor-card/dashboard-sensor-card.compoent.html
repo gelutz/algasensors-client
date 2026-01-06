@@ -15,8 +15,6 @@
             <div class="flex justify-between gap-2">
                 <div class="flex flex-col max-w-40 min-h-4">
                     <span class="font-semibold">{{_sensor()?.name}}</span>
-                    <small class="text-muted-color font-mono">{{_sensor()?.ip}}</small>
-                    <small class="text-muted-color font-mono">{{_sensor()?.location}}</small>
                 </div>
             </div>
         </div>
@@ -33,20 +31,30 @@
     </ng-template>
 
     <h1 class="mt-4 text-3xl font-bold flex items-center" [class.text-muted-color]="!_sensor()?.lastTemperature">
-        <lucide-icon [img]="ThermometerIcon" size="30" name="thermometer"></lucide-icon>
-        {{_sensor()?.lastTemperature ?? '--.-'}} ⁰C
+        {{_sensor()?.lastTemperature ?? '--.-'}}<span class="text-xl ml-1">°C</span>
     </h1>
+
+    <div class="flex items-end justify-between gap-1 h-16 mt-4 mb-4">
+        @for (value of barData(); track $index) {
+        <div class="flex-1 rounded-sm transition-all duration-300" [class.bg-primary]="value !== null"
+            [class.bg-surface-300]="value === null" [style.height.%]="value !== null ? getBarHeight(value) : 10"
+            [style.opacity]="value !== null ? 0.4 + ($index / 10) * 0.6 : 0.3">
+        </div>
+        }
+    </div>
 
     <p-divider></p-divider>
     <div class="flex items-center justify-between text-surface-600">
         <div class="text-sm flex flex-col">
-            <span>Min:</span>
-            <span class="text-color font-semibold">-- ⁰C</span>
+            <span>Min</span>
+            <span class="text-color font-semibold">@if (validBarData().length > 0) {{{barMin() | number:'1.1-1'}}°C}
+                @else {--.-°C}</span>
         </div>
 
-        <div class="text-sm flex flex-col">
-            <span>Max:</span>
-            <span class="text-color font-semibold">-- ⁰C</span>
+        <div class="text-sm flex flex-col text-right">
+            <span>Max</span>
+            <span class="text-color font-semibold">@if (validBarData().length > 0) {{{barMax() | number:'1.1-1'}}°C}
+                @else {--.-°C}</span>
         </div>
     </div>
 </p-panel>

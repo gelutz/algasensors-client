@@ -21,6 +21,11 @@ type SensorDetailResponse = {
     };
 };
 
+export type DailyMedianTemperature = {
+    date: string;
+    medianTemperature: number | null;
+};
+
 @Injectable({
     providedIn: 'root',
 })
@@ -52,4 +57,10 @@ export class SensorService extends Service {
     disable(sensorId: string) {
         return this.http.delete<void>(`${this.managerUrl}/${sensorId}/enable`);
     }
+
+    getDailyMedianTemperatures = (sensorId: string) => {
+        return this.http.get<DailyMedianTemperature[]>(
+            `${this.managerUrl}/${sensorId}/temperatures/daily-median`,
+        );
+    };
 }

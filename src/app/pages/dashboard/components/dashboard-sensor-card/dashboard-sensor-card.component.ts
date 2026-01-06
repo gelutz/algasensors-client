@@ -1,6 +1,8 @@
+import { DecimalPipe } from '@angular/common';
 import {
     AfterViewInit,
     Component,
+    computed,
     DestroyRef,
     effect,
     inject,
@@ -8,6 +10,7 @@ import {
     signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { interval } from 'rxjs';
 import {
     EraserIcon,
     LucideAngularModule,
@@ -23,6 +26,7 @@ import { Panel } from 'primeng/panel';
 import type { Sensor } from '../../../../models/sensor';
 import { SensorService } from '../../../../services/sensor.service';
 import { DashboardService } from '../dashboard.service';
+
 @Component({
     selector: 'app-dashboard-sensor-card',
     imports: [
@@ -33,6 +37,7 @@ import { DashboardService } from '../dashboard.service';
         Menu,
         BlockUI,
         Panel,
+        DecimalPipe,
     ],
     templateUrl: './dashboard-sensor-card.compoent.html',
 })
@@ -50,6 +55,20 @@ export class DashboardSensorCardComponent implements AfterViewInit {
     _sensor = signal<Sensor | undefined>(undefined);
 
     menuOptions = signal<MenuItem[]>([]);
+
+    barData = signal<(number | null)[]>([]);
+    validBarData = computed(() => this.barData().filter((v): v is number => v !== null));
+    barMin = computed(() => this.validBarData().length > 0 ? Math.min(...this.validBarData()) : 0);
+    barMax = computed(() => this.validBarData().length > 0 ? Math.max(...this.validBarData()) : 0);
+
+    getBarHeight = (value: number | null): number => {
+        if (value === null) return 0;
+        const min = this.barMin();
+        const max = this.barMax();
+        const range = max - min;
+        if (range === 0) return 50;
+        return ((value - min) / range) * 80 + 20;
+    };
 
     constructor() {
         effect(() => {
@@ -77,6 +96,8 @@ export class DashboardSensorCardComponent implements AfterViewInit {
 
     ngAfterViewInit() {
         this.getSensorDetails();
+        this.getDailyMedianTemperatures();
+        this.startMedianTemperaturePolling();
     }
 
     getSensorDetails = () => {
@@ -89,12 +110,28 @@ export class DashboardSensorCardComponent implements AfterViewInit {
                     !prev?.id
                         ? prev
                         : {
-                              ...prev,
-                              lastTemperature: response.details.lastTemperature,
-                              updatedAt: response.details.updatedAt,
-                          },
+                            ...prev,
+                            lastTemperature: response.details.lastTemperature,
+                            updatedAt: response.details.updatedAt,
+                        },
                 );
             });
+    };
+
+    getDailyMedianTemperatures = () => {
+        if (!this.sensor()) return;
+        this.sensorService
+            .getDailyMedianTemperatures(this.sensor().id)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe((data) => {
+                this.barData.set(data.map((d) => d.medianTemperature));
+            });
+    };
+
+    startMedianTemperaturePolling = () => {
+        interval(5000)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe(() => this.getDailyMedianTemperatures());
     };
 
     deleteSensor = () => {

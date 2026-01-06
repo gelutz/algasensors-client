@@ -1,7 +1,7 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { Button } from 'primeng/button';
 import { Divider } from 'primeng/divider';
-import { mediaQuery } from '../../../../../utils/media-query';
+import { mediaQuery } from '../../../../../utils/css/media-query';
 import { DashboardService } from '../dashboard.service';
 import { SensorDialogComponent } from '../sensor-dialog/sensor-dialog.component';
 

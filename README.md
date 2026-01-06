@@ -46,4 +46,4 @@ Build artifacts are stored in the `dist/` directory.
 - [Manager Service](../manager/README.md) - Device management API
 - [Monitor Service](../monitor/README.md) - Temperature monitoring API
 - [Processor Service](../processor/README.md) - Data processing
-- [Seeder Service](../seeder/README.md) - Mock data generator
+- [Generator Service](../generator/README.md) - Mock data generator
