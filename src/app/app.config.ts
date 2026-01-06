@@ -4,7 +4,7 @@ import {
 } from "@angular/core";
 import { provideRouter } from "@angular/router";
 import { providePrimeNG } from "primeng/config";
-import { CatppuccinPreset } from "../utils/catppuccin-theme";
+import { CatppuccinPreset } from "../utils/css/catppuccin-theme";
 import { routes } from "./app.routes";
 
 export const appConfig: ApplicationConfig = {

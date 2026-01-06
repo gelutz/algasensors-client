@@ -1,10 +1,9 @@
 # Build stage
-FROM node:21-alpine AS builder
+FROM node:20-alpine AS builder
 WORKDIR /app
-COPY package.json pnpm-lock.yaml ./
-RUN npm install -g pnpm && pnpm install --frozen-lockfile
 COPY . .
-RUN npm run build:docker
+RUN npm install --frozen-lockfile
+RUN npm run build:prod
 
 # Runtime stage - Caddy
 FROM caddy:2-alpine
