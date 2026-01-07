@@ -1,0 +1,35 @@
+<div class="p-6 w-full">
+    <p-breadcrumb [model]="breadcrumbItems()" [home]="breadcrumbHome" class="mb-2" />
+
+    <div class="mb-4">
+        <h1 class="text-2xl text-primary font-semibold">{{ sensor()?.name ?? 'Loading...' }}</h1>
+        <div class="flex flex-wrap gap-5 text-base text-muted-color mt-2">
+            <span class="flex items-center gap-1.5">
+                <i class="pi pi-hashtag text-sm"></i>
+                {{ sensor()?.id ?? '--' }}
+            </span>
+            <span class="flex items-center gap-1.5">
+                <i class="pi pi-map-marker text-sm"></i>
+                {{ sensor()?.location ?? '--' }}
+            </span>
+            <span class="flex items-center gap-1.5">
+                <i class="pi pi-wifi text-sm"></i>
+                {{ sensor()?.ip ?? '--' }}
+            </span>
+        </div>
+    </div>
+
+    <p-divider />
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+        <div class="lg:col-span-2 flex flex-col gap-6">
+            <app-temperature-history-card [sensor]="sensor()" [alert]="alert()" />
+            <app-recent-activity-card [sensor]="sensor()" [alert]="alert()" />
+        </div>
+
+        <div class="flex flex-col gap-6">
+            <app-alert-settings-card [sensor]="sensor()" [alert]="alert()" />
+            <app-device-info-card [sensor]="sensor()" />
+        </div>
+    </div>
+</div>

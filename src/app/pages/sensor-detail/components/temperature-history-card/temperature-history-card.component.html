@@ -1,0 +1,26 @@
+<p-card>
+    <ng-template #header>
+        <div class="flex items-center justify-between p-4 pb-0">
+            <h2 class="text-lg font-semibold">Temperature History</h2>
+            <p-selectbutton [options]="periodOptions" [ngModel]="selectedPeriod()"
+                (ngModelChange)="onPeriodChange($event)" optionLabel="label" optionValue="value" size="small" />
+        </div>
+    </ng-template>
+
+    <div class="h-72">
+        @if (loading()) {
+        <div class="h-full flex items-center justify-center">
+            <i class="pi pi-spin pi-spinner text-2xl text-muted-color"></i>
+        </div>
+        } @else if (temperatureData().length === 0) {
+        <div class="h-full flex items-center justify-center text-muted-color">
+            <div class="text-center">
+                <i class="pi pi-chart-line text-4xl mb-2"></i>
+                <p>No temperature data available</p>
+            </div>
+        </div>
+        } @else {
+        <p-chart type="line" [data]="chartData()" [options]="chartOptions()" class="h-full" />
+        }
+    </div>
+</p-card>

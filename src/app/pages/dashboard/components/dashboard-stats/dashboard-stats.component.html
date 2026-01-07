@@ -52,17 +52,27 @@
         <div class="flex items-center justify-between">
             <div class="flex flex-col">
                 <span class="text-sm text-muted-color font-medium">Last Alert</span>
+                @if (lastAlertedSensor()) {
                 <div class="flex items-baseline gap-1 mt-1">
-                    <span class="text-xl font-bold text-orange-500">{{ lastAlertedSensor.name }}</span>
+                    <span class="text-xl font-bold text-orange-500">{{ lastAlertedSensor()!.name }}</span>
                 </div>
                 <div class="flex items-center gap-2 mt-1">
-                    <span class="text-sm font-semibold">{{ lastAlertedSensor.temperature }}°C</span>
+                    <span class="text-sm font-semibold">{{ lastAlertedSensor()!.temperature.toFixed(1) }}°C</span>
                     <span class="text-xs text-muted-color">• {{ formatAlertTime() }}</span>
                 </div>
+                } @else {
+                <div class="flex items-baseline gap-1 mt-1">
+                    <span class="text-xl font-bold text-muted-color">No alerts</span>
+                </div>
+                <span class="text-xs text-muted-color mt-2">All sensors within thresholds</span>
+                }
             </div>
-            <div class="w-14 h-14 rounded-full bg-orange-500/10 flex items-center justify-center">
-                <lucide-icon [img]="AlertTriangleIcon" class="text-orange-500" size="28"
-                    name="alert-triangle"></lucide-icon>
+            <div class="w-14 h-14 rounded-full flex items-center justify-center"
+                [class.bg-orange-500/10]="lastAlertedSensor()"
+                [class.bg-surface-200]="!lastAlertedSensor()">
+                <lucide-icon [img]="AlertTriangleIcon" size="28" name="alert-triangle"
+                    [class.text-orange-500]="lastAlertedSensor()"
+                    [class.text-muted-color]="!lastAlertedSensor()"></lucide-icon>
             </div>
         </div>
     </p-card>

@@ -14,7 +14,8 @@
         <div class="mr-8">
             <div class="flex justify-between gap-2">
                 <div class="flex flex-col max-w-40 min-h-4">
-                    <span class="font-semibold">{{_sensor()?.name}}</span>
+                    <a [routerLink]="['/sensor', _sensor()?.id]"
+                        class="font-semibold hover:text-primary transition-colors">{{_sensor()?.name}}</a>
                 </div>
             </div>
         </div>
@@ -34,26 +35,33 @@
         {{_sensor()?.lastTemperature ?? '--.-'}}<span class="text-xl ml-1">°C</span>
     </h1>
 
-    <div class="flex items-end justify-between gap-1 h-16 mt-4 mb-4">
-        @for (value of barData(); track $index) {
-        <div class="flex-1 rounded-sm transition-all duration-300" [class.bg-primary]="value !== null"
-            [class.bg-surface-300]="value === null" [style.height.%]="value !== null ? getBarHeight(value) : 10"
-            [style.opacity]="value !== null ? 0.4 + ($index / 10) * 0.6 : 0.3">
+    <div class="mt-4 mb-4">
+        <span class="text-xs text-surface-500">Last 10 days mean</span>
+        <div class="flex items-end justify-between gap-1 h-16 mt-1">
+            @for (value of barData(); track $index) {
+            <div class="flex-1 rounded-sm transition-all duration-300 cursor-pointer"
+                [class.bg-primary]="value !== null" [class.bg-surface-300]="value === null"
+                [style.height.%]="value !== null ? getBarHeight(value) : 10"
+                [style.opacity]="value !== null ? 0.4 + ($index / 10) * 0.6 : 0.3" [pTooltip]="getBarTooltip(value)"
+                tooltipPosition="top">
+            </div>
+            }
         </div>
-        }
     </div>
 
     <p-divider></p-divider>
     <div class="flex items-center justify-between text-surface-600">
         <div class="text-sm flex flex-col">
-            <span>Min</span>
-            <span class="text-color font-semibold">@if (validBarData().length > 0) {{{barMin() | number:'1.1-1'}}°C}
+            <span>Min Alert</span>
+            <span class="text-color font-semibold">@if (sensorAlert()?.minTemperature != null)
+                {{{sensorAlert()!.minTemperature | number:'1.1-1'}}°C}
                 @else {--.-°C}</span>
         </div>
 
         <div class="text-sm flex flex-col text-right">
-            <span>Max</span>
-            <span class="text-color font-semibold">@if (validBarData().length > 0) {{{barMax() | number:'1.1-1'}}°C}
+            <span>Max Alert</span>
+            <span class="text-color font-semibold">@if (sensorAlert()?.maxTemperature != null)
+                {{{sensorAlert()!.maxTemperature | number:'1.1-1'}}°C}
                 @else {--.-°C}</span>
         </div>
     </div>

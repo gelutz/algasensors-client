@@ -1,0 +1,31 @@
+<p-card>
+    <ng-template #header>
+        <div class="p-4 pb-0">
+            <h2 class="text-lg font-semibold">Recent Activity</h2>
+        </div>
+    </ng-template>
+
+    <p-table [value]="activities()" [tableStyle]="{ 'min-width': '100%' }">
+        <ng-template #header>
+            <tr>
+                <th>Timestamp</th>
+                <th>Event Type</th>
+                <th>Value</th>
+                <th>Status</th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-activity>
+            <tr>
+                <td class="text-muted-color">{{ activity.timestamp }}</td>
+                <td>{{ activity.eventType }}</td>
+                <td [class.text-orange-400]="activity.status === 'Warning'" class="font-medium">
+                    {{ activity.value }}
+                </td>
+                <td>
+                    <p-tag [value]="activity.status" [severity]="getStatusSeverity(activity.status)" />
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</p-card>
+

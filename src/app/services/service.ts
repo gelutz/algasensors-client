@@ -20,6 +20,7 @@ export type PageableResponse<R> = {
 export abstract class Service {
     http = inject(HttpClient);
     managerUrl = `${environment.managerUrl}/api/sensors`;
+    monitorUrl = `${environment.monitorUrl}/api/sensors`;
 
     parsePageableParams = (pageable: PageableParams): HttpParams => {
         const params = new HttpParams()

@@ -1,6 +1,9 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, of, Subject } from 'rxjs';
 import { Sensor } from '../models/sensor';
+import { SensorAlert, SensorAlertInput } from '../models/sensor-alert';
+import { TemperatureLog } from '../models/temperature-log';
 import { PageableParams, PageableResponse, Service } from './service';
 
 type SensorInput = {
@@ -30,6 +33,9 @@ export type DailyMedianTemperature = {
     providedIn: 'root',
 })
 export class SensorService extends Service {
+    alertUpdated$ = new Subject<SensorAlert>();
+    alertDeleted$ = new Subject<string>();
+
     getPagedSensors = (pageable?: PageableParams) => {
         return this.http.get<PageableResponse<Sensor>>(this.managerUrl, {
             params: pageable && this.parsePageableParams(pageable),
@@ -61,6 +67,39 @@ export class SensorService extends Service {
     getDailyMedianTemperatures = (sensorId: string) => {
         return this.http.get<DailyMedianTemperature[]>(
             `${this.managerUrl}/${sensorId}/temperatures/daily-median`,
+        );
+    };
+
+    getTemperatureHistory = (sensorId: string, days: number) => {
+        return this.http.get<TemperatureLog[]>(
+            `${this.managerUrl}/${sensorId}/temperatures/history`,
+            { params: { days: days.toString() } }
+        );
+    };
+
+    getAlert = (sensorId: string): Observable<SensorAlert | null> => {
+        return this.http.get<SensorAlert>(`${this.monitorUrl}/${sensorId}/alert`).pipe(
+            catchError((error: HttpErrorResponse) => {
+                if (error.status === 404) {
+                    return of(null);
+                }
+                throw error;
+            })
+        );
+    };
+
+    saveAlert = (sensorId: string, input: SensorAlertInput): Observable<SensorAlert> => {
+        return this.http.put<SensorAlert>(`${this.monitorUrl}/${sensorId}/alert`, input);
+    };
+
+    deleteAlert = (sensorId: string): Observable<void> => {
+        return this.http.delete<void>(`${this.monitorUrl}/${sensorId}/alert`);
+    };
+
+    getTemperatureLogs = (sensorId: string, pageable?: PageableParams): Observable<PageableResponse<TemperatureLog>> => {
+        return this.http.get<PageableResponse<TemperatureLog>>(
+            `${this.monitorUrl}/${sensorId}/temperatures`,
+            { params: pageable && this.parsePageableParams(pageable) }
         );
     };
 }

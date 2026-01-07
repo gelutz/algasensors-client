@@ -10,6 +10,7 @@ import {
     signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { RouterLink } from '@angular/router';
 import { interval } from 'rxjs';
 import {
     EraserIcon,
@@ -23,7 +24,9 @@ import { Button } from 'primeng/button';
 import { Divider } from 'primeng/divider';
 import { Menu } from 'primeng/menu';
 import { Panel } from 'primeng/panel';
+import { Tooltip } from 'primeng/tooltip';
 import type { Sensor } from '../../../../models/sensor';
+import { SensorAlert } from '../../../../models/sensor-alert';
 import { SensorService } from '../../../../services/sensor.service';
 import { DashboardService } from '../dashboard.service';
 
@@ -38,6 +41,8 @@ import { DashboardService } from '../dashboard.service';
         BlockUI,
         Panel,
         DecimalPipe,
+        RouterLink,
+        Tooltip,
     ],
     templateUrl: './dashboard-sensor-card.compoent.html',
 })
@@ -53,6 +58,7 @@ export class DashboardSensorCardComponent implements AfterViewInit {
 
     sensor = input.required<Sensor>();
     _sensor = signal<Sensor | undefined>(undefined);
+    sensorAlert = signal<SensorAlert | null>(null);
 
     menuOptions = signal<MenuItem[]>([]);
 
@@ -68,6 +74,10 @@ export class DashboardSensorCardComponent implements AfterViewInit {
         const range = max - min;
         if (range === 0) return 50;
         return ((value - min) / range) * 80 + 20;
+    };
+
+    getBarTooltip = (value: number | null): string => {
+        return value !== null ? `${value.toFixed(1)}°C` : 'No data';
     };
 
     constructor() {
@@ -94,10 +104,11 @@ export class DashboardSensorCardComponent implements AfterViewInit {
         });
     }
 
-    ngAfterViewInit() {
+    ngAfterViewInit(): void {
         this.getSensorDetails();
         this.getDailyMedianTemperatures();
         this.startMedianTemperaturePolling();
+        this.getSensorAlert();
     }
 
     getSensorDetails = () => {
@@ -128,10 +139,18 @@ export class DashboardSensorCardComponent implements AfterViewInit {
             });
     };
 
-    startMedianTemperaturePolling = () => {
+    startMedianTemperaturePolling = (): void => {
         interval(5000)
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => this.getDailyMedianTemperatures());
+    };
+
+    getSensorAlert = (): void => {
+        if (!this.sensor()) return;
+        this.sensorService
+            .getAlert(this.sensor().id)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe((alert) => this.sensorAlert.set(alert));
     };
 
     deleteSensor = () => {
