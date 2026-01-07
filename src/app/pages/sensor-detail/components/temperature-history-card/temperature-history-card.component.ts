@@ -1,5 +1,7 @@
 import { Component, computed, effect, inject, input, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Chart } from 'chart.js';
+import zoomPlugin from 'chartjs-plugin-zoom';
 import { Card } from 'primeng/card';
 import { ChartModule } from 'primeng/chart';
 import { SelectButton } from 'primeng/selectbutton';
@@ -7,6 +9,8 @@ import { Sensor } from '../../../../models/sensor';
 import { SensorAlert } from '../../../../models/sensor-alert';
 import { TemperatureLog } from '../../../../models/temperature-log';
 import { SensorService } from '../../../../services/sensor.service';
+
+Chart.register(zoomPlugin);
 
 type TimePeriod = '24h' | '7D' | '30D';
 
@@ -101,6 +105,21 @@ export class TemperatureHistoryCardComponent {
                 legend: {
                     labels: {
                         color: textColor,
+                    },
+                },
+                zoom: {
+                    pan: {
+                        enabled: true,
+                        mode: 'x',
+                    },
+                    zoom: {
+                        wheel: {
+                            enabled: true,
+                        },
+                        pinch: {
+                            enabled: true,
+                        },
+                        mode: 'x',
                     },
                 },
             },
